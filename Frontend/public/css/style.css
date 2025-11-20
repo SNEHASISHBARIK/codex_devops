@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+}
+
+/* Navbar */
+.navbar {
+    background: #111;
+    padding: 15px 30px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: white;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+/* Typography */
+h1, h2 {
+    text-align: center;
+}
+
+/* Buttons */
+.btn {
+    background: #111;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #333;
+}
+
+.btn.outline {
+    background: transparent;
+    border: 1px solid #111;
+    color: #111;
+}
+
+.btn.outline:hover {
+    background: #111;
+    color: white;
+}
+
+/* Forms */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form input {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
