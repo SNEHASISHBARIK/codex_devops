@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./Backend
+    container_name: codex_backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Backend:/app
+      - ./frontend:/frontend
+    environment:
+      - PORT=3000
+      - MONGODB_URL=mongodb://mongo:27017/codexdb
+      - JWT_KEY=spandanblogapitestkey
+    depends_on:
+      - mongo
+    command: npm run dev
+
+  mongo:
+    image: mongo:6
+    container_name: codex_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

@@ -1,15 +1,13 @@
-import mongoose from 'mongoose'
-import debug from 'debug'
-const dblog = debug("development:db")
+import mongoose from "mongoose";
 
-const connectDB = async (url) =>{
-    try {
-        await mongoose.connect(url)
-        dblog("DB connected ...")
-        return true
-    } catch (error) {
-        console.error(error)
-    }
-}
+const connectDB = async (mongoURL) => {
+  try {
+    await mongoose.connect(mongoURL);
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.error("Mongo Connection Error:", err.message);
+    process.exit(1);
+  }
+};
 
-export default connectDB
+export default connectDB;

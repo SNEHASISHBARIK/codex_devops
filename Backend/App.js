@@ -1,49 +1,48 @@
-import express from 'express'
-import dotenv from 'dotenv' ; dotenv.config()
-import debug from 'debug'
-import cookieparser from 'cookie-parser'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
+import cookieParser from "cookie-parser";
+import path from "path";
+import { fileURLToPath } from "url";
+import expressLayouts from "express-ejs-layouts";
+import connectDB from "./config/db.js";
 
-const app = express()
+import authrouter from "./routes/auth.routes.js";
+import postrouter from "./routes/posts.route.js";
 
-// Fix for ES Modules path
+const app = express();
+
+// ---------------- PATH FIX ----------------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const ROOT = path.join(__dirname, "..");
 
-// ---- View Engine (Frontend Folder) ----
+// Frontend setup
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "../frontend/views"));
-app.use(express.static(path.join(__dirname, "../frontend/public")));
-
-import expressLayouts from "express-ejs-layouts";
+app.set("views", path.join(ROOT, "frontend", "views"));
+app.use(express.static(path.join(ROOT, "frontend", "public")));
 app.use(expressLayouts);
 app.set("layout", "layout");
 
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// ---- Middlewares ----
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-app.use(cookieparser())
+// Frontend routes
+app.get("/", (req, res) => res.render("home", { title: "Home" }));
+app.get("/login", (req, res) => res.render("login", { title: "Login" }));
+app.get("/register", (req, res) => res.render("register", { title: "Register" }));
 
-// ---- FRONTEND Pages ----
-app.get("/", (req,res)=> res.render("home", { title: "Home" }))
-app.get("/login", (req,res)=> res.render("login", { title: "Login" }))
-app.get("/register", (req,res)=> res.render("register", { title: "Register" }))
+// API routes
+app.use("/api", authrouter);
+app.use("/api", postrouter);
 
-// ---- API Routes ----
-import authrouter from './routes/auth.routes.js'
-app.use('/api',authrouter)
+// DB + SERVER
+const PORT = process.env.PORT || 3000;
 
-import postrouter from './routes/posts.route.js'
-app.use("/api",postrouter)
-
-
-// ---- DB & Server ----
-import connectDB from './config/db.js'
-connectDB(process.env.MONGODB_URL).then(()=>{
-    app.listen(process.env.PORT,()=>{
-        const applog = debug("development:app")
-        applog(`server up ! http://localhost:${process.env.PORT}`)
-    })
-})
+connectDB(process.env.MONGODB_URL).then(() => {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+});
